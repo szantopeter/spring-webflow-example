@@ -13,3 +13,5 @@ Technologies used for this demo :
 	- Apache Tiles
 		- EL Support
 		- Nesting Definitions
+		
+To start the project type mvn jetty:run or mvn tomcat:run
