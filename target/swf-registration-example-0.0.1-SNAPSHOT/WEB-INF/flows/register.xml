@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+	<!--
+		<secured attributes="ROLE_USER" /> <persistence-context/> <input
+		name="hotelId" required="true" /> <on-start> <evaluate
+		expression="bookingService.createBooking(hotelId, currentUser.name)"
+		result="flowScope.booking" /> </on-start>
+	-->
+
+
+	<view-state id="registrationPage1" model="user">
+		<binder>
+			<binding property="firstName" required="true" />
+			<binding property="lastName" required="false" />
+			<binding property="emailAddress" required="true" />
+			<binding property="dob" converter="shortDate" required="true" />
+		</binder>
+		<transition on="next" to="ageSelection" />
+
+		<transition on="checkEmailAvailability">
+			<evaluate expression="registrationService.isEmailAvailible(user.getEmailAddress())" result="viewScope.message" />
+			<render fragments="emailAvailability" />
+		</transition>
+	</view-state>
+	
+	<decision-state id="ageSelection">
+		<if test="registrationService.isUserAdult(user)" then="adultPage" />
+		<if test="registrationService.isUserTeen(user)" then="teenPage"
+			else="childPage" />
+	</decision-state>
+
+	<!-- This is an abstact page of adult, teen and child page -->
+	<view-state id="registrationPage2" model="user">
+		<transition on="store" to="store" />
+		<transition on="back" to="registrationPage1" bind="false" />
+	</view-state>
+
+	<view-state id="adultPage" model="user" view="registrationPage2" parent="register#registrationPage2">
+		<on-entry>
+			<set name="flowScope.ageBand" value="'Adult flow'" />
+			<set name="flashScope.ageBandPage" value="'adultPage'" />
+		</on-entry>
+	</view-state>
+
+	<view-state id="teenPage" model="user" view="registrationPage2" parent="register#registrationPage2">
+		<on-entry>
+			<set name="flowScope.ageBand" value="'Teen flow'" />
+			<set name="flashScope.ageBandPage" value="'teenChildPage'" />
+		</on-entry>
+	</view-state>
+
+	<view-state id="childPage" model="user" view="registrationPage2" parent="register#registrationPage2">
+		<on-entry>
+			<set name="flowScope.ageBand" value="'Child flow'" />
+			<set name="flashScope.ageBandPage" value="'teenChildPage'" />
+		</on-entry>
+	</view-state>
+
+	<view-state id="errorPage" />
+
+	<end-state id="store" commit="true" view="registrationFarewell">
+		<on-entry>
+			<evaluate expression="registrationService.storeUser(user)" />
+		</on-entry>
+	</end-state>
+
+	<end-state id="cancel" view="externalRedirect:contextRelative:/index.jsp" />
+
+	<global-transitions>
+		<transition on="cancel" to="cancel" bind="false" />
+		<transition on-exception="java.lang.Exception" to="errorPage" />
+	</global-transitions>
+
+</flow>

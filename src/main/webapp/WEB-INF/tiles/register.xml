@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+<!-- 
+	<definition name="registrationPage*" template="/WEB-INF/jsp/registration/registration_frame.jsp">
+		<put-attribute name="title" type="string" value="Regsitration" />
+		<put-attribute name="body" value="/WEB-INF/jsp/registration/{0}.jsp" />
+	</definition>
+ -->
+
+	<definition name="registrationFarewell" template="/WEB-INF/jsp/registration/farewell.jsp"/>
+
+	
+	<definition name="registrationPage1.body" template="/WEB-INF/jsp/registration/registrationPage1.jsp">
+		<put-attribute name="emailAvailability" value="registrationPage1.emailAvailability" />
+	</definition>
+
+	<definition name="registrationPage1" template="/WEB-INF/jsp/registration/registration_frame.jsp">
+		<put-attribute name="title" type="string" value="Page 1" />
+		<put-attribute name="body" value="registrationPage1.body" />
+	</definition>
+	
+ 
+ <!-- tiles 2.1.x version
+	<definition name="registrationPage1" template="/WEB-INF/jsp/registration/registration_frame.jsp">
+		<put-attribute name="title" type="string" value="Page 1" />
+		<put-attribute name="emailAvailability" value="registrationPage1.emailAvailability" />
+		<put-attribute name="body">
+			<definition template="/WEB-INF/jsp/registration/registrationPage1.jsp">
+ 			</definition>
+		</put-attribute>
+	</definition>
+ -->
+	<definition name="registrationPage1.emailAvailability" template="/WEB-INF/jsp/registration/emailAvailability.jsp"/>
+
+ <!-- tiles 2.1.x version
+	<definition name="registrationPage2" template="/WEB-INF/jsp/registration/registration_frame.jsp">
+		<put-attribute name="title" type="string" value="Page 2" />
+		<put-attribute name="body" >
+			<definition template="/WEB-INF/jsp/registration/registrationPage2.jsp">
+				<put-attribute name="ageBandPage" expression="/WEB-INF/jsp/registration/${requestScope.ageBandPage}.jsp" />
+ 			</definition>
+		</put-attribute>
+		
+	</definition>
+ --> 	
+
+	<definition name="registrationPage2" template="/WEB-INF/jsp/registration/registration_frame.jsp">
+		<put-attribute name="title" type="string" value="Page 2" />
+		<put-attribute name="body" value="/WEB-INF/jsp/registration/registrationPage2.jsp" />
+	</definition>
+
+	<definition name="errorPage" template="/WEB-INF/jsp/errorPage.jsp"/>
+
+</tiles-definitions>
+
